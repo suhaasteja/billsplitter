@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill Splitter - Summary</title>
+</head>
+<body>
+    <header>
+        <h1 style="
+        font-size: 94px;
+    ">Bill Splitter - Summary</h1>
+    </header>
+    <main style="
+    font-size: 70px;
+">
+        <table>
+            <thead>
+                <tr>
+                    <th>Persons</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person, total in totals.items() %}
+                <tr>
+                    <td>{{ person }}</td>
+                    <td>${{ "%.2f"|format(total) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/">Start Over</a>
+    </main>
+</body>
+</html>
