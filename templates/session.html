@@ -7,11 +7,11 @@
 </head>
 <body>
     <header>
-        <h1 style="font-family: Arial, sans-serif; font-size: 180px; color: #333;text-align: center;">Bill Splitter</h1>
+        <h1 style="font-family: Arial, sans-serif; font-size: 50px; color: #333;">Bill Splitter</h1>
     </header>
     <main>
-        <h2 style="font-family: Arial, sans-serif; font-size: 70px; color: #333;text-align: center;">Items from Receipt</h2>
-        <table id="items-table" border="1" style="font-family: Arial, sans-serif; font-size: 50px; color: #333;"">
+        <h2 style="font-family: Arial, sans-serif; font-size: 35px; color: #333;">Items from Receipt</h2>
+        <table id="items-table" border="1" style="font-family: Arial, sans-serif; font-size: 25px; color: #333;"">
             <thead>
                 <tr>
                     <th>Item</th>
@@ -28,12 +28,12 @@
                         <!-- Dynamically add checkboxes for each person -->
                         {% for person in people %}
                         <label style="
-                        HEIGHT: 40px;
-                        width: 40px;
+                        HEIGHT: 20px;
+                        width: 20px;
                     ">
                             <input type="checkbox" class="allocation-checkbox" data-item="{{ item.name }}" data-person="{{ person }}" style="
-                            HEIGHT: 40px;
-                            width: 40px;
+                            HEIGHT: 20px;
+                            width: 20px;
                         ">
                             {{ person }}
                         </label>
@@ -44,20 +44,20 @@
             </tbody>
         </table>
 
-        <h2 style="font-size: 40px;">Add Person</h2>
+        <h2 style="font-size: 25px;">Add Person</h2>
         <form id="add-person-form">
-            <input type="text" name="person_name" placeholder="Enter name" required    style=" height: 30px;
-            width: 300px;
-            font-size: 30px;
+            <input type="text" name="person_name" placeholder="Enter name" required    style=" height: 25px;
+            width: 100px;
+            font-size: 20px;
         ">
             <button type="submit" style="
-            font-size: 40px;
+            font-size: 25px;
         ">Add Person</button>
         </form>
 
         <h2>Finalize</h2>
         <button id="finalize-button" style="
-        font-size: 40px;
+        font-size: 25px;
     ">Finalize Split</button>
     </main>
 </body>
