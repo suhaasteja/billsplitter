@@ -3,16 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>Bill Splitter - Upload</title>
+    <style>
+        body {
+            background-color: #f9f9f9;
+        }
+
+        header h1 {
+            font-family: Arial, sans-serif;
+            font-size: 50px;
+            color: #4a90e2; /* Light blue */
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        main h2 {
+            font-family: Arial, sans-serif;
+            font-size: 40px;
+            color: #333;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        input[type="file"] {
+            font-family: Arial, sans-serif;
+            font-size: 25px;
+            color: #555; /* Slightly darker gray for text */
+            text-align: center;
+            background-color: #fff;
+            border: 2px solid #ccc; /* Light gray border */
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        button[type="submit"] {
+            font-family: Arial, sans-serif;
+            font-size: 25px;
+            height: 50px;
+            width: 120px;
+            color: white;
+            text-align: center;
+            background-color: #4a90e2; /* Light blue matching header */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #357ab8; /* Darker blue for hover effect */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1 style="font-family: Arial, sans-serif; font-size: 50px; color: #333;">Bill Splitter</h1>
+        <h1>Bill Splitter</h1>
     </header>
     <main>
-        <h2 style="font-family: Arial, sans-serif; font-size: 40px; color: #333;">Upload Receipt</h2>
+        <h2>Upload Receipt</h2>
         <form action="/upload_image" method="post" enctype="multipart/form-data">
-            <input type="file" name="bill_image" accept="image/*" required style="font-family: Arial, sans-serif; font-size: 25px; color: #333;text-align: center;position: relative; top: 40px;">
-            <button type="submit" style="font-family: Arial, sans-serif; font-size: 25px;height: 35px; width: 95px; position: relative; top: 100px;color: #333;text-align: center;">Upload</button>
+            <input type="file" name="bill_image" accept="image/*" required>
+            <button type="submit">Upload</button>
         </form>
     </main>
 </body>
