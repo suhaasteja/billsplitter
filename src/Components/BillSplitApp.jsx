@@ -88,36 +88,37 @@ const BillSplitApp = () => {
 
   const handleDeletePerson = async (personToDelete) => {
     try {
-      // Remove person from people array
-      setPeople((currentPeople) =>
-        currentPeople.filter((person) => person !== personToDelete)
+      // First call the mock API to delete the person
+      await mockBillSplitApi.deletePerson(personToDelete);
+      
+      // Then update local state
+      setPeople(currentPeople => 
+        currentPeople.filter(person => person !== personToDelete)
       );
-
-      // Remove person from all allocations
-      setAllocations((currentAllocations) => {
+  
+      // Update allocations
+      setAllocations(currentAllocations => {
         const newAllocations = { ...currentAllocations };
-
-        // Remove the person from each item's allocations
-        Object.keys(newAllocations).forEach((itemName) => {
+        
+        Object.keys(newAllocations).forEach(itemName => {
           newAllocations[itemName] = newAllocations[itemName].filter(
-            (person) => person !== personToDelete
+            person => person !== personToDelete
           );
-
-          // Remove the item entry if no one is allocated
+          
           if (newAllocations[itemName].length === 0) {
             delete newAllocations[itemName];
           }
         });
-
+  
         return newAllocations;
       });
     } catch (error) {
-      console.error("Failed to delete person:", error);
+      console.error('Failed to delete person:', error);
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-center mb-8 flex items-center justify-center gap-3">
         <img
           src="https://cdn-icons-png.flaticon.com/512/1611/1611154.png"
@@ -128,44 +129,57 @@ const BillSplitApp = () => {
       </h1>
 
       {step === "upload" && (
-        <ImageUploadForm onUploadSuccess={handleUploadSuccess} />
+        <div className="max-w-3xl mx-auto">
+          <ImageUploadForm onUploadSuccess={handleUploadSuccess} />
+        </div>
       )}
 
       {step === "allocate" && (
         <div className="space-y-8">
-          {/* Center the AddPeopleForm */}
-          <div className="flex justify-center">
-            <div className="w-full max-w-md">
+          {/* Side by side layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[600px]">
+            {/* Left side - People */}
+            <div className="h-full">
               <AddPeopleForm
                 people={people}
                 onAddPerson={handleAddPerson}
                 onDeletePerson={handleDeletePerson}
               />
             </div>
+
+            {/* Right side - Items */}
+            <div className="h-full">
+              {items.length > 0 && (
+                <ItemList
+                  items={items}
+                  people={people}
+                  allocations={allocations}
+                  onToggleAllocation={handleToggleAllocation}
+                />
+              )}
+            </div>
           </div>
 
-          {items.length > 0 && (
-            <ItemList
-              items={items}
-              people={people}
-              allocations={allocations}
-              onToggleAllocation={handleToggleAllocation}
-            />
-          )}
-
+          {/* Calculate button */}
           {items.length > 0 && people.length > 0 && (
-            <button
-              onClick={handleFinalize}
-              disabled={!isReadyToFinalize()}
-              className="w-full bg-purple-500 text-white py-3 px-4 rounded-lg hover:bg-purple-600 transition-colors mb-8 disabled:bg-purple-300 disabled:cursor-not-allowed"
-            >
-              Calculate Split
-            </button>
+            <div className="max-w-md mx-auto">
+              <button
+                onClick={handleFinalize}
+                disabled={!isReadyToFinalize()}
+                className="w-full bg-purple-500 text-white py-3 px-4 rounded-lg hover:bg-purple-600 transition-colors disabled:bg-purple-300 disabled:cursor-not-allowed"
+              >
+                Calculate Split
+              </button>
+            </div>
           )}
         </div>
       )}
 
-      {step === "summary" && <ResultsDisplay totals={totals} />}
+      {step === "summary" && (
+        <div className="max-w-3xl mx-auto">
+          <ResultsDisplay totals={totals} />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,3 @@
-// Create this file at: /src/api/mockBillSplitApi.js
-
 const mockItems = {
     items: [
       {
@@ -25,13 +23,12 @@ const mockItems = {
     ]
   };
   
-  const mockPeople = [];
   let mockSession = {
     items: mockItems.items,
-    people: mockPeople
+    people: []  // This will be our single source of truth for people
   };
   
-  const mockBillSplitApi = {
+  export const mockBillSplitApi = {
     uploadImage: async (imageFile) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       return mockItems;
@@ -45,10 +42,20 @@ const mockItems = {
     addPerson: async (name) => {
       await new Promise(resolve => setTimeout(resolve, 500));
       if (!mockSession.people.includes(name)) {
-        mockSession.people.push(name);
+        mockSession.people = [...mockSession.people, name];
       }
       return {
         message: 'Person added successfully.',
+        people: mockSession.people
+      };
+    },
+  
+    // Add new delete person method
+    deletePerson: async (personToDelete) => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      mockSession.people = mockSession.people.filter(person => person !== personToDelete);
+      return {
+        message: 'Person deleted successfully.',
         people: mockSession.people
       };
     },
@@ -77,5 +84,3 @@ const mockItems = {
       };
     }
   };
-  
-  export { mockBillSplitApi };
