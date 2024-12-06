@@ -1,58 +1,81 @@
-export const billSplitApi = {
-  uploadImage: async (imageFile) => {
-    const formData = new FormData();
-    formData.append('bill_image', imageFile);
-    
-    const response = await fetch('http://localhost:5000/upload_image', {
-      method: 'POST',
-      body: formData,
-      credentials: 'include',  // Add this line
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+// src/api/mockBillSplitApi.js
+
+const mockItems = {
+  items: [
+    {
+      name: "ObiDbl",
+      price: 2.65
+    },
+    {
+      name: "98 Meat Pty XChz\nCounter-Eat In",
+      price: 88.20
+    },
+    {
+      name: "Fresh Juice",
+      price: 5.50
+    },
+    {
+      name: "Garden Salad",
+      price: 12.95
+    },
+    {
+      name: "French Fries",
+      price: 4.99
     }
-    return response.json();
+  ]
+};
+
+const mockPeople = [];
+let mockSession = {
+  items: mockItems.items,
+  people: mockPeople
+};
+
+export const mockBillSplitApi = {
+  uploadImage: async (imageFile) => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return mockItems;
   },
 
-  // Update other API calls similarly
   getSession: async () => {
-    const response = await fetch('http://localhost:5000/session', {
-      credentials: 'include',
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return mockSession;
   },
 
   addPerson: async (name) => {
-    const response = await fetch('http://localhost:5000/add_person', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ name }),
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    if (!mockSession.people.includes(name)) {
+      mockSession.people.push(name);
     }
-    return response.json();
+    return {
+      message: 'Person added successfully.',
+      people: mockSession.people
+    };
   },
 
   finalizeSplit: async (allocations) => {
-    const response = await fetch('http://localhost:5000/finalize', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ allocations }),
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    const totals = {};
+    
+    // Calculate splits based on allocations
+    mockSession.people.forEach(person => {
+      totals[person] = 0;
     });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  },
+
+    Object.entries(allocations).forEach(([itemName, sharedBy]) => {
+      const item = mockSession.items.find(item => item.name === itemName);
+      if (item && sharedBy.length > 0) {
+        const splitAmount = item.price / sharedBy.length;
+        sharedBy.forEach(person => {
+          totals[person] += splitAmount;
+        });
+      }
+    });
+
+    return {
+      message: 'Split finalized.',
+      totals: totals
+    };
+  }
 };
